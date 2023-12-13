@@ -30,6 +30,7 @@ const W12MForm = () => {
           type="number"
           validation="Numbers ONLY. Must be at least 1,000,000,000"
           min={1000000000}
+          pattern="^[1-9]\d{9,}$"
           placeholder="0"
         ></FormSection>
         <FormSection
@@ -46,10 +47,8 @@ const W12MForm = () => {
           label="Reasons for sparing?"
           name="sparingreason"
           tag="textarea"
-          placeholder="Give reasons to further your case."
+          placeholder="Must be between 17 and 153 characters"
           required={true}
-          validation="Must be between 17 and 153 characters"
-          pattern="^.{17,153}$"
           min={17}
           max={153}
         ></FormSection>

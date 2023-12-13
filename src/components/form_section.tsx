@@ -31,19 +31,35 @@ const FormSection: React.FC<Props> = ({
 }) => {
   const [selectedOption, setSelectedOption] = useState("");
   const selectRef = useRef<HTMLSelectElement | null>(null);
+  const inputRef = useRef<HTMLInputElement | null>(null);
 
   const handleSelectChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
     setSelectedOption(event.target.value);
     if (pattern) validate(event.target.value, pattern, selectRef.current);
   };
 
+  const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    if (pattern) validate(event.target.value, pattern, inputRef.current);
+  };
+
   const validate = (value: string, pattern: string, element: any) => {
-    if (value !== pattern) element.classList.add("error");
-    else element.classList.remove("error");
+    if (tag === "select") {
+      if (value !== pattern) {
+        element.classList.add("error");
+      } else {
+        element.classList.remove("error");
+      }
+    } else {
+      if (!new RegExp(pattern).test(value)) {
+        element.classList.add("error");
+      } else {
+        element.classList.remove("error");
+      }
+    }
   };
 
   return (
-    <section>
+    <section className="section">
       <label>
         <span>{label}</span>
         <div>
@@ -51,6 +67,7 @@ const FormSection: React.FC<Props> = ({
             <select
               name={name}
               id={id || name}
+              data-testid={id || name}
               value={selectedOption}
               onChange={handleSelectChange}
               required={required}
@@ -73,6 +90,7 @@ const FormSection: React.FC<Props> = ({
               maxLength={max}
               name={name}
               id={id || name}
+              data-testid={id || name}
               required={required}
             />
           ) : (
@@ -84,6 +102,9 @@ const FormSection: React.FC<Props> = ({
               min={min}
               name={name}
               id={id || name}
+              data-testid={id || name}
+              ref={inputRef}
+              onChange={handleInputChange}
             />
           )}
           {validation && <p className="hint">{validation}</p>}
