@@ -1,12 +1,34 @@
-import { useState } from "react";
+import { useState, useRef } from "react";
 import W12MHeader from "./W12MHeader";
 import FormSection from "./form_section";
+import FormAction from "./form_action";
 
 const W12MForm = () => {
+  const formRef = useRef<HTMLFormElement>(null!);
+  const [isFormValid, setIsFormValid] = useState(false);
+
+  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    let data = new FormData(formRef.current);
+    let formObject = Object.fromEntries(data.entries());
+    console.log(formObject);
+  };
+
+  const handleFormChange = () => {
+    const isValid = formRef.current?.checkValidity();
+    setIsFormValid(isValid);
+  };
+
   return (
     <section className="w12MForm">
       <W12MHeader />
-      <form className="form" action="">
+      <form
+        className="form"
+        action=""
+        ref={formRef}
+        onChange={handleFormChange}
+        onSubmit={handleSubmit}
+      >
         <FormSection
           label="Species Name"
           name="speciesname"
@@ -52,6 +74,7 @@ const W12MForm = () => {
           min={17}
           max={153}
         ></FormSection>
+        <FormAction isFormValid={isFormValid} />
       </form>
     </section>
   );

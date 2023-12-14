@@ -46,6 +46,7 @@ const FormSection: React.FC<Props> = ({
     if (tag === "select") {
       if (value !== pattern) {
         element.classList.add("error");
+        setSelectedOption("");
       } else {
         element.classList.remove("error");
       }
